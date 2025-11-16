@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestao_habitos_saudaveis.model.Habito;
 import org.springframework.stereotype.Repository;
+
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.nio.file.Paths;
@@ -60,6 +61,7 @@ public class JsonHabitoRepository implements HabitoRepository {
             List<Habito> list = mapper.readValue(dbFile, new TypeReference<List<Habito>>() {});
             habitos.clear();
             if (list != null) habitos.addAll(list);
+
         } catch (Exception e) {
             throw new RuntimeException("Erro ao carregar hábitos JSON", e);
         }
