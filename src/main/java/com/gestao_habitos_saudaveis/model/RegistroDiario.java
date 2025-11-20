@@ -1,9 +1,12 @@
 package com.gestao_habitos_saudaveis.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistroDiario {
+
     private Long id;
     private Usuario usuario;
     private String data;
@@ -21,35 +24,15 @@ public class RegistroDiario {
         this.habitos.add(registroHabito);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
+    public String getData() { return data; }
+    public void setData(String data) { this.data = data; }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public List<RegistroHabito> getHabitos() {
-        return habitos;
-    }
-
-    public void setHabitos(List<RegistroHabito> habitos) {
-        this.habitos = habitos;
-    }
+    public List<RegistroHabito> getHabitos() { return habitos; }
+    public void setHabitos(List<RegistroHabito> habitos) { this.habitos = habitos; }
 }
