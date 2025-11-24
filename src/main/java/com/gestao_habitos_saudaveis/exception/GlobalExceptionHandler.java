@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-    public class GlobalExceptionHandler {
+    public class GlobalExceptionHandler extends RuntimeExceptio {
 
         @ExceptionHandler(RecursoNaoEncontradoException.class)
         public ResponseEntity<String> handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
