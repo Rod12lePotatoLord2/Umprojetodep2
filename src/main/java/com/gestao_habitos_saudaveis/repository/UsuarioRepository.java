@@ -58,4 +58,11 @@ public class UsuarioRepository {
         if (removido) JsonUtil.salvarUsuarios(usuarios, arquivoJson);
         return removido;
     }
+
+    public Usuario buscarPorId(Long id) {
+        return usuarios.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -45,7 +45,7 @@ public class RegistroIntegradoService {
             }
 
             RegistroHabito registroHabito = new RegistroHabito();
-            registroHabito.setHabito(habito);
+            registroHabito.setIdHabito(habito.getId());
             registro.getHabitos().add(registroHabito);
         }
 

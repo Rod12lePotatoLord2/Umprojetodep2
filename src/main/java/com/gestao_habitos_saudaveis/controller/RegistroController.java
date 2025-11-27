@@ -18,6 +18,9 @@ public class RegistroController {
         this.service = service;
     }
 
+    // ───────────────────────────────────────────────
+    // REGISTRO DIÁRIO
+    // ───────────────────────────────────────────────
 
     @GetMapping("/diarios")
     public List<RegistroDiario> listarRegistrosDiarios() {
@@ -25,7 +28,7 @@ public class RegistroController {
     }
 
     @GetMapping("/diarios/{id}")
-    public RegistroDiario buscarRegistroDiario(@PathVariable Long id) {
+    public RegistroDiario buscarRegistroDiario(@PathVariable String id) {
         return service.buscarRegistroDiarioPorId(id);
     }
 
@@ -36,7 +39,7 @@ public class RegistroController {
 
     @PutMapping("/diarios/{id}")
     public RegistroDiario atualizarRegistroDiario(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody RegistroDiario registroAtualizado
     ) {
         RegistroDiario existente = service.buscarRegistroDiarioPorId(id);
@@ -49,10 +52,13 @@ public class RegistroController {
     }
 
     @DeleteMapping("/diarios/{id}")
-    public void deletarRegistroDiario(@PathVariable Long id) {
+    public void deletarRegistroDiario(@PathVariable String id) {
         service.deletarRegistroDiario(id);
     }
 
+    // ───────────────────────────────────────────────
+    // REGISTRO HABITO
+    // ───────────────────────────────────────────────
 
     @GetMapping("/habitos")
     public List<RegistroHabito> listarRegistrosHabitos() {
@@ -60,7 +66,7 @@ public class RegistroController {
     }
 
     @GetMapping("/habitos/{id}")
-    public RegistroHabito buscarRegistroHabito(@PathVariable Long id) {
+    public RegistroHabito buscarRegistroHabito(@PathVariable String id) {
         return service.buscarRegistroHabitoPorId(id);
     }
 
@@ -71,19 +77,19 @@ public class RegistroController {
 
     @PutMapping("/habitos/{id}")
     public RegistroHabito atualizarRegistroHabito(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody RegistroHabito atualizado
     ) {
         RegistroHabito existente = service.buscarRegistroHabitoPorId(id);
 
         existente.setData(atualizado.getData());
-        existente.setHabito(atualizado.getHabito());
+        existente.setIdHabito(atualizado.getIdHabito());
 
         return service.salvarRegistroHabito(existente);
     }
 
     @DeleteMapping("/habitos/{id}")
-    public void deletarRegistroHabito(@PathVariable Long id) {
+    public void deletarRegistroHabito(@PathVariable String id) {
         service.deletarRegistroHabito(id);
     }
 }

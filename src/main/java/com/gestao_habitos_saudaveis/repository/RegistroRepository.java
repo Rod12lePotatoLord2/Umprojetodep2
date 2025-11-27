@@ -18,59 +18,69 @@ public class RegistroRepository {
     private final AtomicLong idDiarioGenerator = new AtomicLong(1);
     private final AtomicLong idHabitoGenerator = new AtomicLong(1);
 
+    private String gerarIdDiario() {
+        return "DIARIO-" + idDiarioGenerator.getAndIncrement();
+    }
+
+    private String gerarIdHabito() {
+        return "REGHABITO-" + idHabitoGenerator.getAndIncrement();
+    }
+
     // REGISTRO DIÁRIO
 
     public List<RegistroDiario> listarRegistrosDiarios() {
         return new ArrayList<>(registrosDiarios);
     }
 
-    public Optional<RegistroDiario> buscarRegistroDiarioPorId(Long id) {
+    public Optional<RegistroDiario> buscarRegistroDiarioPorId(String id) {
         return registrosDiarios.stream()
                 .filter(r -> r.getId().equals(id))
                 .findFirst();
     }
 
     public RegistroDiario salvarRegistroDiario(RegistroDiario registro) {
-        if (registro.getId() == null) {
-            registro.setId(idDiarioGenerator.getAndIncrement());
-            registrosDiarios.add(registro);  // criação
+
+        if (registro.getId() == null || registro.getId().isBlank()) {
+            registro.setId(gerarIdDiario());
+            registrosDiarios.add(registro);
         } else {
-            // atualização
             registrosDiarios.removeIf(r -> r.getId().equals(registro.getId()));
             registrosDiarios.add(registro);
         }
+
         return registro;
     }
 
-    public boolean deletarRegistroDiario(Long id) {
+    public boolean deletarRegistroDiario(String id) {
         return registrosDiarios.removeIf(r -> r.getId().equals(id));
     }
 
-    // REGISTRO DIÁRIO
+    // REGISTRO HÁBITO
 
     public List<RegistroHabito> listarRegistrosHabitos() {
         return new ArrayList<>(registrosHabitos);
     }
 
-    public Optional<RegistroHabito> buscarRegistroHabitoPorId(Long id) {
+    public Optional<RegistroHabito> buscarRegistroHabitoPorId(String id) {
         return registrosHabitos.stream()
                 .filter(r -> r.getId().equals(id))
                 .findFirst();
     }
 
     public RegistroHabito salvarRegistroHabito(RegistroHabito registro) {
-        if (registro.getId() == null) {
-            registro.setId(idHabitoGenerator.getAndIncrement());
-            registrosHabitos.add(registro); // criação
-        } else {
 
+        if (registro.getId() == null || registro.getId().isBlank()) {
+            registro.setId(gerarIdHabito());
+            registrosHabitos.add(registro);
+        } else {
             registrosHabitos.removeIf(r -> r.getId().equals(registro.getId()));
             registrosHabitos.add(registro);
         }
+
         return registro;
     }
 
-    public boolean deletarRegistroHabito(Long id) {
+    public boolean deletarRegistroHabito(String id) {
         return registrosHabitos.removeIf(r -> r.getId().equals(id));
     }
 }

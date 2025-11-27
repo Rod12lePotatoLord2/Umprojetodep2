@@ -47,4 +47,12 @@ public class UsuarioService {
             throw new RecursoNaoEncontradoException("Usuário com email " + email + " não encontrado");
         }
     }
+
+    public Usuario buscarUsuarioPorId(Long id) {
+        Usuario usuario = repository.buscarPorId(id);
+        if (usuario == null) {
+            throw new RecursoNaoEncontradoException("Usuário com ID " + id + " não encontrado");
+        }
+        return usuario;
+    }
 }
