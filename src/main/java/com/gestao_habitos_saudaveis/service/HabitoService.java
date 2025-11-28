@@ -28,7 +28,7 @@ public class HabitoService {
 
     public Habito criar(Habito habito) {
         validar(habito);
-        habito.resumo(); // polimorfismo (exemplo de chamada)
+        habito.resumo();
         return repository.save(habito);
     }
 
@@ -47,7 +47,7 @@ public class HabitoService {
     }
 
     public void deletar(String id) {
-        buscarPorId(id); // valida existência
+        buscarPorId(id);
         repository.deleteById(id);
     }
 
@@ -59,4 +59,15 @@ public class HabitoService {
             throw new BadRequestException("Título é obrigatório.");
         }
     }
+    public Habito buscarHabitoPorId(Long id) {
+        if (id == null) {
+            throw new BadRequestException("ID do hábito não pode ser nulo.");
+        }
+
+        String idString = String.valueOf(id);
+
+        return repository.findById(idString)
+                .orElseThrow(() -> new ResourceNotFoundException("Hábito com ID " + id + " não encontrado."));
+    }
+
 }

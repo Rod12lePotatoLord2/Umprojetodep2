@@ -1,12 +1,11 @@
 package com.gestao_habitos_saudaveis.service;
 
 import com.gestao_habitos_saudaveis.exception.DadosInvalidosException;
+import com.gestao_habitos_saudaveis.exception.RecursoNaoEncontradoException;
 import com.gestao_habitos_saudaveis.model.RegistroDiario;
 import com.gestao_habitos_saudaveis.model.RegistroHabito;
 import com.gestao_habitos_saudaveis.repository.RegistroRepository;
 import org.springframework.stereotype.Service;
-import com.gestao_habitos_saudaveis.exception.RecursoNaoEncontradoException;
-
 
 import java.util.List;
 
@@ -19,12 +18,13 @@ public class RegistroService {
         this.repository = repository;
     }
 
+    // REGISTRO DIÁRIO
 
     public List<RegistroDiario> listarRegistrosDiarios() {
         return repository.listarRegistrosDiarios();
     }
 
-    public RegistroDiario buscarRegistroDiarioPorId(Long id) {
+    public RegistroDiario buscarRegistroDiarioPorId(String id) {
         return repository.buscarRegistroDiarioPorId(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Registro diário não encontrado."));
     }
@@ -36,19 +36,20 @@ public class RegistroService {
         return repository.salvarRegistroDiario(registro);
     }
 
-    public void deletarRegistroDiario(Long id) {
+    public void deletarRegistroDiario(String id) {
         boolean removido = repository.deletarRegistroDiario(id);
         if (!removido) {
             throw new RecursoNaoEncontradoException("Registro diário não encontrado para exclusão.");
         }
     }
 
+    // REGISTRO HÁBITO
 
     public List<RegistroHabito> listarRegistrosHabitos() {
         return repository.listarRegistrosHabitos();
     }
 
-    public RegistroHabito buscarRegistroHabitoPorId(Long id) {
+    public RegistroHabito buscarRegistroHabitoPorId(String id) {
         return repository.buscarRegistroHabitoPorId(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Registro de hábito não encontrado."));
     }
@@ -60,7 +61,7 @@ public class RegistroService {
         return repository.salvarRegistroHabito(registro);
     }
 
-    public void deletarRegistroHabito(Long id) {
+    public void deletarRegistroHabito(String id) {
         boolean removido = repository.deletarRegistroHabito(id);
         if (!removido) {
             throw new RecursoNaoEncontradoException("Registro de hábito não encontrado para exclusão.");

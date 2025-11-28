@@ -7,14 +7,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistroDiario {
 
-    private Long id;
+    private String id; // mudou para String
     private Usuario usuario;
     private String data;
     private List<RegistroHabito> habitos = new ArrayList<>();
 
     public RegistroDiario() {}
 
-    public RegistroDiario(Long id, Usuario usuario, String data) {
+    public RegistroDiario(String id, Usuario usuario, String data) {
         this.id = id;
         this.usuario = usuario;
         this.data = data;
@@ -24,8 +24,8 @@ public class RegistroDiario {
         this.habitos.add(registroHabito);
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public Usuario getUsuario() { return usuario; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
