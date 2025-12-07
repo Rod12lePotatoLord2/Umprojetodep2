@@ -1,12 +1,11 @@
 package com.gestao_habitos_saudaveis.service;
 
-import com.gestao_habitos_saudaveis.exception.ResourceNotFoundException;
-import com.gestao_habitos_saudaveis.exception.BadRequestException;
 import com.gestao_habitos_saudaveis.model.Habito;
 import com.gestao_habitos_saudaveis.repository.HabitoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HabitoService {
@@ -17,57 +16,27 @@ public class HabitoService {
         this.repository = repository;
     }
 
-    public List<Habito> listarTodos() {
+    public List<Habito> listar() {
         return repository.findAll();
     }
 
-    public Habito buscarPorId(String id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Hábito não encontrado: " + id));
+    public Habito buscarHabitoPorId(String id) {
+        return repository.findById(id).orElse(null);
     }
 
-    public Habito criar(Habito habito) {
-        validar(habito);
-        habito.resumo();
-        return repository.save(habito);
+    public Habito criar(Habito h) {
+        if (h.getId() == null || h.getId().isBlank()) {
+            h.setId(UUID.randomUUID().toString());
+        }
+        return repository.save(h);
     }
 
-    public Habito atualizar(String id, Habito atualizado) {
-        validar(atualizado);
-
-        Habito existente = buscarPorId(id);
-
-        existente.setTitulo(atualizado.getTitulo());
-        existente.setDescricao(atualizado.getDescricao());
-        existente.setAtivo(atualizado.isAtivo());
-
-        existente.resumo();
-
-        return repository.save(existente);
+    public Habito atualizar(String id, Habito h) {
+        h.setId(id);
+        return repository.save(h);
     }
 
     public void deletar(String id) {
-        buscarPorId(id);
         repository.deleteById(id);
     }
-
-    private void validar(Habito habito) {
-        if (habito == null) {
-            throw new BadRequestException("O hábito não pode ser nulo.");
-        }
-        if (habito.getTitulo() == null || habito.getTitulo().isBlank()) {
-            throw new BadRequestException("Título é obrigatório.");
-        }
-    }
-    public Habito buscarHabitoPorId(Long id) {
-        if (id == null) {
-            throw new BadRequestException("ID do hábito não pode ser nulo.");
-        }
-
-        String idString = String.valueOf(id);
-
-        return repository.findById(idString)
-                .orElseThrow(() -> new ResourceNotFoundException("Hábito com ID " + id + " não encontrado."));
-    }
-
 }

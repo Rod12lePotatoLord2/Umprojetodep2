@@ -2,6 +2,7 @@ package com.gestao_habitos_saudaveis.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.gestao_habitos_saudaveis.model.Habito;
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +16,29 @@ import java.util.Optional;
 @Repository
 public class JsonHabitoRepository implements HabitoRepository {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-    private final File dbFile = Paths.get("data", "habitos.json").toFile();
+    private final ObjectMapper mapper = new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT);
+
+    private final File externalDbFile = Paths.get(
+            "C:/Users/gabri/Documents/Umprojetodep2/habitos.json"
+    ).toFile();
+
     private final List<Habito> habitos = new ArrayList<>();
 
     @PostConstruct
     public void init() {
-        load();
+        try {
+            externalDbFile.getParentFile().mkdirs();
+
+            if (!externalDbFile.exists()) {
+                mapper.writeValue(externalDbFile, habitos);
+            }
+
+            load();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao inicializar repositório JSON", e);
+        }
     }
 
     @Override
@@ -53,14 +70,13 @@ public class JsonHabitoRepository implements HabitoRepository {
     @Override
     public void load() {
         try {
-            if (!dbFile.exists()) {
-                dbFile.getParentFile().mkdirs();
-                mapper.writeValue(dbFile, habitos);
-                return;
-            }
-            List<Habito> list = mapper.readValue(dbFile, new TypeReference<List<Habito>>() {});
+            List<Habito> lista = mapper.readValue(
+                    externalDbFile,
+                    new TypeReference<List<Habito>>() {}
+            );
+
             habitos.clear();
-            if (list != null) habitos.addAll(list);
+            if (lista != null) habitos.addAll(lista);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao carregar hábitos JSON", e);
@@ -70,7 +86,7 @@ public class JsonHabitoRepository implements HabitoRepository {
     @Override
     public void persist() {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(dbFile, habitos);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(externalDbFile, habitos);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar hábitos JSON", e);
         }

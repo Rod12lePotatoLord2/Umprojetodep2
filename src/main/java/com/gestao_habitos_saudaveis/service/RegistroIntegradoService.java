@@ -8,10 +8,7 @@ import com.gestao_habitos_saudaveis.repository.RegistroRepository;
 import org.springframework.stereotype.Service;
 import com.gestao_habitos_saudaveis.exception.RecursoNaoEncontradoException;
 
-
 import java.util.List;
-
-
 
 @Service
 public class RegistroIntegradoService {
@@ -38,8 +35,8 @@ public class RegistroIntegradoService {
         }
 
         for (Long idHabito : idsHabitos) {
-            Habito habito = habitoService.buscarHabitoPorId(idHabito);
 
+            Habito habito = habitoService.buscarHabitoPorId(String.valueOf(idHabito));
             if (habito == null) {
                 throw new RecursoNaoEncontradoException("Hábito não encontrado: ID " + idHabito);
             }

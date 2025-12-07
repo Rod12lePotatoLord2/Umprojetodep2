@@ -16,8 +16,12 @@ public class UsuarioRepository {
     private final String arquivoJson = "usuarios.json";
 
     public UsuarioRepository() {
-        this.usuarios = JsonUtil.carregarUsuarios(arquivoJson);
+
+        List<Usuario> carregados = JsonUtil.carregarUsuarios(arquivoJson);
+        this.usuarios = (carregados != null) ? carregados : new ArrayList<>();
+
         this.idCounter = usuarios.stream()
+                .filter(u -> u.getId() != null)
                 .mapToLong(Usuario::getId)
                 .max()
                 .orElse(0) + 1;
@@ -33,7 +37,9 @@ public class UsuarioRepository {
         return usuario;
     }
 
-    public List<Usuario> listarUsuarios() { return new ArrayList<>(usuarios); }
+    public List<Usuario> listarUsuarios() {
+        return new ArrayList<>(usuarios);
+    }
 
     public Usuario buscarPorEmail(String email) {
         return usuarios.stream()
@@ -60,8 +66,9 @@ public class UsuarioRepository {
     }
 
     public Usuario buscarPorId(Long id) {
+        if (id == null) return null;
         return usuarios.stream()
-                .filter(u -> u.getId().equals(id))
+                .filter(u -> id.equals(u.getId()))
                 .findFirst()
                 .orElse(null);
     }
