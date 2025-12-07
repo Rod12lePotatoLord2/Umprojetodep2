@@ -11,26 +11,26 @@ import java.util.List;
 
 public class JsonUtil {
 
-    private static final ObjectMapper mapper = new ObjectMapper()
-            .findAndRegisterModules();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final File arquivoJson = new File("usuarios.json");
 
-    public static void salvarUsuarios(List<Usuario> usuarios, String caminhoArquivo) {
+    public static List<Usuario> carregarUsuarios() {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(caminhoArquivo), usuarios);
+            if (!arquivoJson.exists() || arquivoJson.length() == 0) {
+                return new ArrayList<>();
+            }
+            return mapper.readValue(arquivoJson, new TypeReference<List<Usuario>>() {});
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar usuários em JSON", e);
+            return new ArrayList<>();
         }
     }
 
-    public static List<Usuario> carregarUsuarios(String caminhoArquivo) {
+    public static void salvarUsuarios(List<Usuario> usuarios) {
         try {
-            File arquivo = new File(caminhoArquivo);
-            if (!arquivo.exists()) return new ArrayList<>();
-            return mapper.readValue(arquivo, new TypeReference<List<Usuario>>() {});
+            mapper.writerWithDefaultPrettyPrinter().writeValue(arquivoJson, usuarios);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao carregar usuários de JSON", e);
         }
     }
 }

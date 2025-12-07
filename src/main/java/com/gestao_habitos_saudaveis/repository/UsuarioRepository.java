@@ -13,12 +13,16 @@ public class UsuarioRepository {
 
     private final List<Usuario> usuarios;
     private long idCounter;
-    private final String arquivoJson = "usuarios.json";
 
     public UsuarioRepository() {
-
-        List<Usuario> carregados = JsonUtil.carregarUsuarios(arquivoJson);
-        this.usuarios = (carregados != null) ? carregados : new ArrayList<>();
+        List<Usuario> carregados;
+        try {
+            carregados = JsonUtil.carregarUsuarios(); // agora sem argumento
+        } catch (Exception e) {
+            carregados = new ArrayList<>();
+            e.printStackTrace();
+        }
+        this.usuarios = carregados;
 
         this.idCounter = usuarios.stream()
                 .filter(u -> u.getId() != null)
@@ -33,7 +37,13 @@ public class UsuarioRepository {
 
         if (usuario.getId() == null) usuario.setId(idCounter++);
         usuarios.add(usuario);
-        JsonUtil.salvarUsuarios(usuarios, arquivoJson);
+
+        try {
+            JsonUtil.salvarUsuarios(usuarios); // agora sem argumento
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return usuario;
     }
 
@@ -52,7 +62,11 @@ public class UsuarioRepository {
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getEmail().equals(usuarioAtualizado.getEmail())) {
                 usuarios.set(i, usuarioAtualizado);
-                JsonUtil.salvarUsuarios(usuarios, arquivoJson);
+                try {
+                    JsonUtil.salvarUsuarios(usuarios); // sem argumento
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         }
@@ -61,7 +75,13 @@ public class UsuarioRepository {
 
     public boolean excluirUsuario(String email) {
         boolean removido = usuarios.removeIf(u -> u.getEmail().equals(email));
-        if (removido) JsonUtil.salvarUsuarios(usuarios, arquivoJson);
+        if (removido) {
+            try {
+                JsonUtil.salvarUsuarios(usuarios); // sem argumento
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return removido;
     }
 
