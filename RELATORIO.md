@@ -2,7 +2,8 @@
 
 **Disciplina:** Programação 2\
 **Professora:** Aêda Monalliza Cunha de Sousa Brito\
-**Data:** 07/12/2025\
+**Monitores:** Melissa Rêgo Rodrigues e Pedro Ricardo Gomes de Souza\
+**Data:** 08/12/2025\
 **Alunos:**
 - Juliana de Andrade Silva --- julianaandrade123
 - Gabriel Acácio Vasconcelos Sampaio --- Gabriel-Acacio08
@@ -122,6 +123,10 @@ Grande implementação do módulo de hábitos:
 -   Atualizações em repositórios JSON.
 -   Ajuste de tipoUsuario para desserialização.
 -   Merge final da develop na main.
+
+#### 08/12 --- Rodrigo & Gabriel
+- Ajuste no RELATORIO.
+- Adição do README com algumas breves instruções sobre como executar o projeto.
 
 ------------------------------------------------------------------------
 
